@@ -116,5 +116,7 @@ CLOUDINARY_STORAGE = {
 }
 if config('CLOUDINARY_URL', default='') or config('CLOUDINARY_CLOUD_NAME', default=''):
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+print("DEBUG: CLOUDINARY_URL бачить Django?", bool(config('CLOUDINARY_URL', default='')))
+print("DEBUG: яке сховище зараз =", globals().get('DEFAULT_FILE_STORAGE', 'локальне (НЕ Cloudinary)'))
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

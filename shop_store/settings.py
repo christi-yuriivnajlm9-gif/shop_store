@@ -99,24 +99,26 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Render має ефемерну файлову систему - завантажені через адмінку фото
-# зникнуть після рестарту/деплою. Щоб цього уникнути, безкоштовно
-# підключи Cloudinary (cloudinary.com) і встав ці 3 значення в .env
-# на Render. Якщо їх немає - просто використовується локальна файлова
-# система (ОК для розробки на твоєму комп'ютері).
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME', default=''),
     'API_KEY': config('CLOUDINARY_API_KEY', default=''),
     'API_SECRET': config('CLOUDINARY_API_SECRET', default=''),
 }
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 if config('CLOUDINARY_URL', default='') or config('CLOUDINARY_CLOUD_NAME', default=''):
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-print("DEBUG: CLOUDINARY_URL бачить Django?", bool(config('CLOUDINARY_URL', default='')))
-print("DEBUG: яке сховище зараз =", globals().get('DEFAULT_FILE_STORAGE', 'локальне (НЕ Cloudinary)'))
+    STORAGES["default"]["BACKEND"] = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

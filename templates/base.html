@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Маркет{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrap header-row">
+            <a href="{% url 'catalog:product_list' %}" class="logo">Крамниця<span>.</span></a>
+            <nav class="main-nav">
+                <a href="{% url 'catalog:product_list' %}">Каталог</a>
+            </nav>
+            <a href="{% url 'catalog:cart_detail' %}" class="cart-pill">
+                Кошик
+                <span class="cart-count">{{ cart|length }}</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="wrap page">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p>Зроблено на Django. Працюємо щодня з 9:00 до 19:00.</p>
+        </div>
+    </footer>
+</body>
+</html>

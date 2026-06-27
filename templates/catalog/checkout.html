@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Оформлення замовлення{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Оформлення замовлення</h1>
+
+<div class="checkout-layout">
+    <form method="post" class="order-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-row">
+                <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} *{% endif %}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <p class="field-error">{{ field.errors|striptags }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Підтвердити замовлення</button>
+        <p class="hint">Оплата не онлайн — ми зв’яжемося з вами для підтвердження та домовимось про оплату й доставку.</p>
+    </form>
+
+    <aside class="order-summary">
+        <h2 class="aside-title">Ваше замовлення</h2>
+        <ul class="order-summary__list">
+            {% for item in cart %}
+                <li>
+                    <span>{{ item.product.name }} × {{ item.quantity }}</span>
+                    <span>{{ item.total_price }} ₴</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <p class="cart-total">Разом: <strong>{{ cart.get_total_price }} ₴</strong></p>
+    </aside>
+</div>
+{% endblock %}

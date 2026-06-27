@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="product-detail">
+    <div class="product-detail__image">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+            <div class="no-image no-image--large">фото скоро буде</div>
+        {% endif %}
+    </div>
+
+    <div class="product-detail__info">
+        <p class="product-card__category">{{ product.category.name }}</p>
+        <h1 class="page-title">{{ product.name }}</h1>
+        <p class="price-tag">{{ product.price }} ₴</p>
+
+        {% if product.description %}
+            <p class="product-detail__description">{{ product.description|linebreaks }}</p>
+        {% endif %}
+
+        <form action="{% url 'catalog:cart_add' product.id %}" method="post" class="add-to-cart-form">
+            {% csrf_token %}
+            <label for="quantity">Кількість</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1" max="20">
+            <button type="submit" class="btn btn-primary">Додати в кошик</button>
+        </form>
+
+        <a href="{% url 'catalog:product_list' %}" class="back-link">← Назад до каталогу</a>
+    </div>
+</div>
+{% endblock %}

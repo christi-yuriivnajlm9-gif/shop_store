@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if category %}{{ category.name }} — {% endif %}Каталог{% endblock %}
+
+{% block content %}
+<div class="catalog-layout">
+    <aside class="categories">
+        <h2 class="aside-title">Категорії</h2>
+        <ul class="category-list">
+            <li>
+                <a href="{% url 'catalog:product_list' %}" class="{% if not category %}is-active{% endif %}">Усі товари</a>
+            </li>
+            {% for cat in categories %}
+                <li>
+                    <a href="{{ cat.get_absolute_url }}" class="{% if category.id == cat.id %}is-active{% endif %}">{{ cat.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <section class="product-grid-wrap">
+        <h1 class="page-title">{% if category %}{{ category.name }}{% else %}Усі товари{% endif %}</h1>
+
+        {% if products %}
+            <div class="product-grid">
+                {% for product in products %}
+                    <a href="{{ product.get_absolute_url }}" class="product-card">
+                        <div class="product-card__image">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            {% else %}
+                                <div class="no-image">фото скоро буде</div>
+                            {% endif %}
+                        </div>
+                        <p class="product-card__category">{{ product.category.name }}</p>
+                        <h3 class="product-card__name">{{ product.name }}</h3>
+                        <p class="product-card__price">{{ product.price }} ₴</p>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-state">Тут поки що порожньо — товари з’являться зовсім скоро.</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

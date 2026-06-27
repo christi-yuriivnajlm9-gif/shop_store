@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Замовлення прийнято{% endblock %}
+
+{% block content %}
+<div class="success-box">
+    <h1 class="page-title">Дякуємо, {{ order.full_name }}!</h1>
+    <p>Ваше замовлення <strong>№{{ order.id }}</strong> прийнято в обробку.</p>
+    <p>Ми зв’яжемося з вами за номером <strong>{{ order.phone }}</strong> для підтвердження.</p>
+    <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">Повернутися до каталогу</a>
+</div>
+{% endblock %}

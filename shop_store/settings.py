@@ -103,11 +103,15 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME', default=''),
-    'API_KEY': config('CLOUDINARY_API_KEY', default=''),
-    'API_SECRET': config('CLOUDINARY_API_SECRET', default=''),
-}
+_cloudinary_cloud_name = config('CLOUDINARY_CLOUD_NAME', default='')
+
+CLOUDINARY_STORAGE = {}
+if _cloudinary_cloud_name:
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': _cloudinary_cloud_name,
+        'API_KEY': config('CLOUDINARY_API_KEY', default=''),
+        'API_SECRET': config('CLOUDINARY_API_SECRET', default=''),
+    }
 
 STORAGES = {
     "default": {
@@ -118,6 +122,5 @@ STORAGES = {
     },
 }
 
-if config('CLOUDINARY_URL', default='') or config('CLOUDINARY_CLOUD_NAME', default=''):
+if config('CLOUDINARY_URL', default='') or _cloudinary_cloud_name:
     STORAGES["default"]["BACKEND"] = "cloudinary_storage.storage.MediaCloudinaryStorage"
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

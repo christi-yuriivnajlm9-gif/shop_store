@@ -120,5 +120,4 @@ STORAGES = {
 
 if config('CLOUDINARY_URL', default='') or config('CLOUDINARY_CLOUD_NAME', default=''):
     STORAGES["default"]["BACKEND"] = "cloudinary_storage.storage.MediaCloudinaryStorage"
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
